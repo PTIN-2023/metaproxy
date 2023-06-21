@@ -1,0 +1,13 @@
+version: '3.2'
+services:
+  # META PROXY
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/certs:/etc/ssl/certs
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./nginx/snippets:/etc/nginx/snippets
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
