@@ -9,4 +9,4 @@ regen-keys:
 
 .PHONY: docker-metaproxy
 docker-metaproxy:
-	docker-compose -f ~/infra/metaproxy/docker-compose.yml up
+	docker-compose -f ~/infra/metaproxy/docker-compose.yml up -d
