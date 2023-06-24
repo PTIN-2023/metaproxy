@@ -4,8 +4,14 @@ regen-dh:
 
 .PHONY: regen-keys
 regen-keys:
-	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ~/infra/metaproxy/nginx/certs/nginx-selfsigned.key -out ~/infra/metaproxy/nginx/certs/nginx-selfsigned.crt -subj '/CN=*.xn--ina.com/O=Gesys./C=ES'
-	chown -R user:user ~/infra/metaproxy/nginx/certs/
+	# Root certificate (to avoid a self-signed cert)
+	openssl genrsa -des3 -out nginx/certs/ca.key 2048
+	openssl req -new -key nginx/certs/ca.key -out nginx/certs/ca-cert-request.csr -sha256 -subj '/CN=*.xn--ina.com/O=TransMed./C=ES'
+	openssl x509 -req -in nginx/certs/ca-cert-request.csr -signkey nginx/certs/ca.key -out nginx/certs/ca-root-cert.crt -days 365 -sha256
+	# Server cert
+	openssl genrsa -out nginx/certs/server.key 2048
+	openssl req -new -key nginx/certs/server.key -out nginx/certs/server-cert-request.csr -sha256  -subj '/CN=*.xn--ina.com/O=TransMed./C=ES'
+	openssl x509 -req -in nginx/certs/server-cert-request.csr -CA nginx/certs/ca-root-cert.crt -CAkey nginx/certs/ca.key -CAcreateserial -out nginx/certs/server.crt -days 360
 
 .PHONY: docker-metaproxy
 docker-metaproxy:
