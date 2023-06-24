@@ -4,7 +4,7 @@ regen-dh:
 
 .PHONY: regen-keys
 regen-keys:
-	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ~/infra/metaproxy/nginx/certs/nginx-selfsigned.key -out ~/infra/metaproxy/nginx/certs/nginx-selfsigned.crt -subj '/CN=craaxkvm.epsevg.upc.es/O=Gesys./C=ES'
+	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ~/infra/metaproxy/nginx/certs/nginx-selfsigned.key -out ~/infra/metaproxy/nginx/certs/nginx-selfsigned.crt -subj '/CN=*.xn--ina.com/O=Gesys./C=ES'
 	chown -R user:user ~/infra/metaproxy/nginx/certs/
 
 .PHONY: docker-metaproxy
